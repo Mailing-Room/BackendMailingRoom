@@ -1,4 +1,4 @@
-package departemen_controller
+package office_controller
 
 import (
 	"regexp"

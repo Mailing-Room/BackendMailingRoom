@@ -40,12 +40,21 @@ type Naskah struct {
 type FormatSurat struct {
 }
 
+type Office struct {
+	OfficeID   string `json:"office_id" bson:"office_id,omitempty"`
+	NamaOffice string `json:"nama_office" bson:"nama_office"`
+	Alamat     string `json:"alamat" bson:"alamat"`
+	Kota       string `json:"kota" bson:"kota"`
+	KodePos    string `json:"kode_pos" bson:"kode_pos"`
+	NoTelp     string `json:"no_telp" bson:"no_telp"`
+	CreatedAt  string `json:"createdAt" bson:"createdAt"`
+	UpdatedAt  string `json:"updatedAt" bson:"updatedAt"`
+}
+
 type Departemen struct {
 	DepartemenID   string `json:"departemen_id" bson:"departemen_id,omitempty"`
 	NamaDepartemen string `json:"nama_departemen" bson:"nama_departemen"`
 	KodeDepartemen string `json:"kode_departemen" bson:"kode_departemen"`
-	Alamat         string `json:"alamat" bson:"alamat"`
-	KodePos        string `json:"kode_pos" bson:"kode_pos"`
 	NoTelp         string `json:"no_telp" bson:"no_telp"`
 	CreatedAt      string `json:"createdAt" bson:"createdAt"`
 	UpdatedAt      string `json:"updatedAt" bson:"updatedAt"`

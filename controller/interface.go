@@ -15,3 +15,7 @@ type UserController interface {
 type DepartemenController interface {
 	InputDepartemen(c *fiber.Ctx) error
 }
+
+type OfficeController interface {
+	InputOffice(c *fiber.Ctx) error
+}

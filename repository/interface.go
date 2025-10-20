@@ -18,3 +18,7 @@ type UserRepository interface {
 type DepartemenRepository interface {
 	InputDepartemen(ctx context.Context, departemen model.Departemen) (model.Departemen, error)
 }
+
+type OfficeRepository interface {
+	InputOffice(ctx context.Context, office model.Office) (model.Office, error)
+}

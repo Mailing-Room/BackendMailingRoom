@@ -1,6 +1,8 @@
 package routes
 
 import (
+	departemen "backendmailingroom/repository/departemen"
+	office "backendmailingroom/repository/office"
 	user "backendmailingroom/repository/users"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,6 +11,8 @@ import (
 
 func Init(db *mongo.Client) {
 	UserRepository = user.NewUser(db)
+	DepartemenRepository = departemen.NewDepartemen(db)
+	OfficeRepository = office.NewOffice(db)
 }
 
 func Router(app *fiber.App) (err error) {

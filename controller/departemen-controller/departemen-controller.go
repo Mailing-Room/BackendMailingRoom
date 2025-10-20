@@ -13,7 +13,7 @@ func (d *DepartemenHandler) InputDepartemen(c *fiber.Ctx) error {
 		return fmt.Errorf("failed to parse request body: %w", err)
 	}
 
-	// Validasi input
+	// Validasi input wajib
 	if departemen.NamaDepartemen == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -28,41 +28,23 @@ func (d *DepartemenHandler) InputDepartemen(c *fiber.Ctx) error {
 		})
 	}
 
-	if departemen.Alamat == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  "error",
-			"message": "Alamat departemen tidak boleh kosong",
-		})
-	}
-
 	if departemen.NoTelp == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "No. Telp departemen tidak boleh kosong",
+			"message": "Nomor telepon departemen tidak boleh kosong",
 		})
 	}
 
-	// Validasi kode pos
-	if departemen.KodePos == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  "error",
-			"message": "Kode pos departemen tidak boleh kosong",
-		})
-	}
-
-	if !validateKodePos(departemen.KodePos) {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  "error",
-			"message": "Kode pos tidak valid. Kode pos harus berupa angka dengan panjang 5 digit.",
-		})
-	}
-
+	// Simpan ke database via repository
 	result, err := d.departemen.InputDepartemen(c.Context(), departemen)
 	if err != nil {
-		return fmt.Errorf("failed to create departemen: %w", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": fmt.Sprintf("Gagal menambahkan departemen: %v", err),
+		})
 	}
 
-	return c.JSON(fiber.Map{
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"status":     "success",
 		"message":    "Departemen berhasil ditambahkan",
 		"departemen": result,
