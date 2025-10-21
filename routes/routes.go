@@ -31,6 +31,11 @@ func AdminRoutes(grp fiber.Router) (err error) {
 	//Departemen Routes
 	groupes.Post("/inputdepartemen", admin.InputDepartemen)
 	groupes.Post("/inputoffice", office.InputOffice)
+	groupes.Get("/getofficebyid/:id", office.GetOfficeByID)
+	groupes.Get("/getalloffice", office.GetAllOffice)
+	groupes.Get("/getofficebykota/:kota", office.GetOfficeByKota)
+	groupes.Delete("/deleteofficebyid/:id", office.DeleteOfficeByID)
+	groupes.Put("/updateoffice/:id", office.UpdateOffice)
 
 	return
 }

@@ -18,4 +18,9 @@ type DepartemenController interface {
 
 type OfficeController interface {
 	InputOffice(c *fiber.Ctx) error
+	GetOfficeByID(c *fiber.Ctx) error
+	GetAllOffice(c *fiber.Ctx) error
+	GetOfficeByKota(c *fiber.Ctx) error
+	DeleteOfficeByID(c *fiber.Ctx) error
+	UpdateOffice(c *fiber.Ctx) error
 }

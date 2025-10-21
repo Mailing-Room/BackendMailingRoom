@@ -21,4 +21,9 @@ type DepartemenRepository interface {
 
 type OfficeRepository interface {
 	InputOffice(ctx context.Context, office model.Office) (model.Office, error)
+	GetOfficeByID(ctx context.Context, id string) (model.Office, error)
+	GetAllOffice(ctx context.Context) ([]model.Office, error)
+	GetOfficeByKota(ctx context.Context, kota string) ([]model.Office, error)
+	DeleteOfficeByID(ctx context.Context, id string) (model.Office, error)
+	UpdateOffice(ctx context.Context, id string, updatedData model.Office) (model.Office, error)
 }

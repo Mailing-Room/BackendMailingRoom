@@ -41,7 +41,7 @@ type FormatSurat struct {
 }
 
 type Office struct {
-	OfficeID   string `json:"office_id" bson:"office_id,omitempty"`
+	OfficeID   string `json:"office_id" bson:"_id,omitempty"`
 	NamaOffice string `json:"nama_office" bson:"nama_office"`
 	Alamat     string `json:"alamat" bson:"alamat"`
 	Kota       string `json:"kota" bson:"kota"`
@@ -52,7 +52,7 @@ type Office struct {
 }
 
 type Departemen struct {
-	DepartemenID   string `json:"departemen_id" bson:"departemen_id,omitempty"`
+	DepartemenID   string `json:"departemen_id" bson:"_id,omitempty"`
 	NamaDepartemen string `json:"nama_departemen" bson:"nama_departemen"`
 	KodeDepartemen string `json:"kode_departemen" bson:"kode_departemen"`
 	NoTelp         string `json:"no_telp" bson:"no_telp"`
@@ -61,7 +61,7 @@ type Departemen struct {
 }
 
 type Pengiriman struct {
-	PengirimanID string `json:"pengiriman_id" bson:"pengiriman_id,omitempty"`
+	PengirimanID string `json:"pengiriman_id" bson:"_id,omitempty"`
 	NaskahID     string `json:"naskah_id" bson:"naskah_id"`
 	KurirID      string `json:"kurir_id" bson:"kurir_id"`
 	TglKirim     string `json:"tgl_kirim" bson:"tgl_kirim"`
