@@ -2,6 +2,7 @@ package routes
 
 import "backendmailingroom/repository"
 
+// Declare repository variables
 var (
 	UserRepository          repository.UserRepository
 	SubdirektoratRepository repository.SubdirektoratRepository
