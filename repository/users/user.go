@@ -19,14 +19,16 @@ func (u *MUser) InputUser(ctx context.Context, user model.User) (model.User, err
 
 	// Membuat dokumen BSON untuk disimpan ke MongoDB
 	userData := bson.M{
-		"name":      user.Name,
-		"email":     user.Email,
-		"role_id":   user.RoleID,
-		"divisi":    user.Divisi,
-		"phone":     user.Phone,
-		"password":  user.Password,
-		"createdAt": time.Now().Format(time.RFC3339),
-		"updatedAt": time.Now().Format(time.RFC3339),
+		"role_id":       user.RoleID,
+		"office_id":     user.OfficeID,
+		"departemen_id": user.DepartemenID,
+		"name":          user.Name,
+		"email":         user.Email,
+		"divisi_id":     user.DivisiID,
+		"phone":         user.Phone,
+		"password":      user.Password,
+		"createdAt":     time.Now().Format(time.RFC3339),
+		"updatedAt":     time.Now().Format(time.RFC3339),
 	}
 
 	// Menyimpan data ke MongoDB
@@ -38,7 +40,7 @@ func (u *MUser) InputUser(ctx context.Context, user model.User) (model.User, err
 
 	// Ambil ID hasil insert (MongoDB ObjectID → string)
 	insertedID := fmt.Sprintf("%v", result.InsertedID)
-	user.ID = insertedID
+	user.UserID = insertedID
 	user.CreatedAt = userData["createdAt"].(string)
 	user.UpdatedAt = userData["updatedAt"].(string)
 
@@ -147,13 +149,15 @@ func (u *MUser) UpdateUser(ctx context.Context, id string, updatedData model.Use
 	filter := bson.M{"_id": objectID}
 	update := bson.M{
 		"$set": bson.M{
-			"name":      updatedData.Name,
-			"email":     updatedData.Email,
-			"role_id":   updatedData.RoleID,
-			"divisi":    updatedData.Divisi,
-			"phone":     updatedData.Phone,
-			"password":  updatedData.Password,
-			"updatedAt": time.Now().Format(time.RFC3339),
+			"role_id":       updatedData.RoleID,
+			"office_id":     updatedData.OfficeID,
+			"departemen_id": updatedData.DepartemenID,
+			"name":          updatedData.Name,
+			"email":         updatedData.Email,
+			"divisi_id":     updatedData.DivisiID,
+			"phone":         updatedData.Phone,
+			"password":      updatedData.Password,
+			"updatedAt":     time.Now().Format(time.RFC3339),
 		},
 	}
 

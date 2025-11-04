@@ -12,8 +12,8 @@ type UserController interface {
 	UpdateUser(c *fiber.Ctx) error
 }
 
-type DepartemenController interface {
-	InputDepartemen(c *fiber.Ctx) error
+type SubdirektoratController interface {
+	InputSubdirektorat(c *fiber.Ctx) error
 }
 
 type OfficeController interface {
@@ -23,4 +23,13 @@ type OfficeController interface {
 	GetOfficeByKota(c *fiber.Ctx) error
 	DeleteOfficeByID(c *fiber.Ctx) error
 	UpdateOffice(c *fiber.Ctx) error
+}
+
+type NaskahController interface {
+}
+
+type KategoriController interface {
+}
+
+type DivisiController interface {
 }

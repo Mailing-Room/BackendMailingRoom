@@ -15,8 +15,8 @@ type UserRepository interface {
 	UpdateUser(ctx context.Context, id string, updatedData model.User) (model.User, error)
 }
 
-type DepartemenRepository interface {
-	InputDepartemen(ctx context.Context, departemen model.Departemen) (model.Departemen, error)
+type SubdirektoratRepository interface {
+	InputSubDirektorat(ctx context.Context, subdirektorat model.SubDirektorat) (model.SubDirektorat, error)
 }
 
 type OfficeRepository interface {
@@ -26,4 +26,13 @@ type OfficeRepository interface {
 	GetOfficeByKota(ctx context.Context, kota string) ([]model.Office, error)
 	DeleteOfficeByID(ctx context.Context, id string) (model.Office, error)
 	UpdateOffice(ctx context.Context, id string, updatedData model.Office) (model.Office, error)
+}
+
+type NaskahRepository interface {
+}
+
+type KategoriRepository interface {
+}
+
+type DivisiRepository interface {
 }

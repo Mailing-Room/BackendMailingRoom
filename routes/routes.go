@@ -1,8 +1,8 @@
 package routes
 
 import (
-	departemen_controller "backendmailingroom/controller/departemen-controller"
 	office_controller "backendmailingroom/controller/office-contoller"
+	subdirektorat_controller "backendmailingroom/controller/subdirektorat-controller"
 	user_controller "backendmailingroom/controller/user-controller"
 
 	"github.com/gofiber/fiber/v2"
@@ -24,12 +24,12 @@ func UserRoutes(grp fiber.Router) (err error) {
 }
 
 func AdminRoutes(grp fiber.Router) (err error) {
-	admin := departemen_controller.NewDepartemenController(DepartemenRepository)
+	admin := subdirektorat_controller.NewSubdirektoratController(SubdirektoratRepository)
 	office := office_controller.NewOfficeController(OfficeRepository)
 
 	groupes := grp.Group("/admin")
 	//Departemen Routes
-	groupes.Post("/inputdepartemen", admin.InputDepartemen)
+	groupes.Post("/inputdepartemen", admin.InputSubdirektorat)
 	groupes.Post("/inputoffice", office.InputOffice)
 	groupes.Get("/getofficebyid/:id", office.GetOfficeByID)
 	groupes.Get("/getalloffice", office.GetAllOffice)

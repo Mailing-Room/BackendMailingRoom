@@ -1,8 +1,8 @@
 package routes
 
 import (
-	departemen "backendmailingroom/repository/departemen"
 	office "backendmailingroom/repository/office"
+	subdirektorat "backendmailingroom/repository/subdirektorat"
 	user "backendmailingroom/repository/users"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,7 +11,7 @@ import (
 
 func Init(db *mongo.Client) {
 	UserRepository = user.NewUser(db)
-	DepartemenRepository = departemen.NewDepartemen(db)
+	SubdirektoratRepository = subdirektorat.NewSubdirektorat(db)
 	OfficeRepository = office.NewOffice(db)
 }
 
