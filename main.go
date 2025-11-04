@@ -6,6 +6,7 @@ import (
 	"backendmailingroom/pkg/exception"
 	"backendmailingroom/routes"
 	"log"
+	"os"
 
 	gcjson "github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
@@ -46,5 +47,11 @@ func main() {
 		return
 	}
 	// Listen on PORT 3000
-	app.Listen(":3000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000" // default saat dijalankan lokal
+	}
+
+	log.Printf("Server running on port %s\n", port)
+	log.Fatal(app.Listen(":" + port))
 }
