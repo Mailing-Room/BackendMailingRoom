@@ -9,13 +9,14 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func EncodeToken(userID string) (string, error) {
+func EncodeToken(userID string, roleID string) (string, error) {
 	// Buat token baru dengan metode signing HMAC SHA256
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Tambahkan klaim (data yang disimpan dalam token)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["user_id"] = userID
+	claims["role_id"] = roleID
 	claims["exp"] = time.Now().Add(24 * time.Hour).Unix() // kadaluarsa 24 jam
 
 	// Kunci rahasia (disarankan simpan di .env)
@@ -30,7 +31,7 @@ func EncodeToken(userID string) (string, error) {
 	return t, nil
 }
 
-func DecodeToken(tokenString string) (string, error) {
+func DecodeToken(tokenString string) (string, string, error) {
 	// Ambil secret key (gunakan environment variable di production)
 	secretKey := []byte(os.Getenv("JWT_SECRET"))
 	if len(secretKey) == 0 {
@@ -47,18 +48,22 @@ func DecodeToken(tokenString string) (string, error) {
 	})
 
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	// Ambil klaim dari token jika valid
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		// Ambil user_id dari klaim
 		userID, ok := claims["user_id"].(string)
+		roleID, ok2 := claims["role_id"].(string)
 		if !ok {
-			return "", errors.New("user_id not found or invalid type")
+			return "", "", errors.New("user_id not found or invalid type")
 		}
-		return userID, nil
+		if !ok2 {
+			return "", "", errors.New("role_id not found or invalid type")
+		}
+		return userID, roleID, nil
 	}
 
-	return "", errors.New("invalid token")
+	return "", "", errors.New("invalid token")
 }

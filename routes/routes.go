@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"backendmailingroom/config/middleware"
 	office_controller "backendmailingroom/controller/office-contoller"
 	subdirektorat_controller "backendmailingroom/controller/subdirektorat-controller"
 	user_controller "backendmailingroom/controller/user-controller"
@@ -12,6 +13,7 @@ func UserRoutes(grp fiber.Router) (err error) {
 	user := user_controller.NewUserController(UserRepository)
 
 	groupes := grp.Group("/user")
+	groupes.Use(middleware.AuthMiddleware("kurir"))
 	//User Routes
 	groupes.Post("/inputuser", user.InputUser)
 	groupes.Get("/getallusers", user.GetAllUsers)
@@ -28,6 +30,7 @@ func AdminRoutes(grp fiber.Router) (err error) {
 	office := office_controller.NewOfficeController(OfficeRepository)
 
 	groupes := grp.Group("/admin")
+	groupes.Use(middleware.AuthMiddleware("admin"))
 	//Departemen Routes
 	groupes.Post("/inputdepartemen", admin.InputSubdirektorat)
 	groupes.Post("/inputoffice", office.InputOffice)

@@ -69,7 +69,7 @@ func (u *UserHandler) Login(c *fiber.Ctx) error {
 		return fmt.Errorf("invalid password")
 	}
 
-	token, err := middleware.EncodeToken(user.UserID)
+	token, err := middleware.EncodeToken(user.UserID, user.RoleID)
 	if err != nil {
 		return fmt.Errorf("failed to generate token: %w", err)
 	}
