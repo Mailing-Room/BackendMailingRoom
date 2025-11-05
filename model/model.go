@@ -82,21 +82,9 @@ type JwtClaims struct {
 	Role   string `json:"role"`
 }
 
-type Tracking struct {
+type Response struct {
+	Response string `json:"response"`
+	Info     string `json:"info,omitempty"`
+	Status   string `json:"status,omitempty"`
+	Location string `json:"location,omitempty"`
 }
-
-type BalasanSurat struct {
-}
-
-// type Pengiriman struct {
-// 	PengirimanID string `json:"pengiriman_id" bson:"_id,omitempty"`
-// 	NaskahID     string `json:"naskah_id" bson:"naskah_id"`
-// 	KurirID      string `json:"kurir_id" bson:"kurir_id"`
-// 	TglKirim     string `json:"tgl_kirim" bson:"tgl_kirim"`
-// 	TglTerima    string `json:"tgl_terima" bson:"tgl_terima"`
-// 	LokasiAwal   string `json:"lokasi_awal" bson:"lokasi_awal"`
-// 	LokasiTujuan string `json:"lokasi_tujuan" bson:"lokasi_tujuan"`
-// 	Status       string `json:"status" bson:"status"` // dikirim, diterima, ditolak
-// 	Catatan      string `json:"catatan" bson:"catatan"`
-// 	UpdatedAt    string `json:"updatedAt" bson:"updatedAt"`
-// }

@@ -24,6 +24,8 @@ func main() {
 		ErrorHandler: exception.ErrHandler,
 	})
 
+	app.Get("/", routes.GetHome)
+
 	app.Use(recover.New(recover.Config{
 		EnableStackTrace: true,
 	}))
