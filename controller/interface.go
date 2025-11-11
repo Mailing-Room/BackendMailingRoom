@@ -3,8 +3,9 @@ package controller
 import "github.com/gofiber/fiber/v2"
 
 type UserController interface {
-	InputUser(c *fiber.Ctx) error
+	RegisterUser(c *fiber.Ctx) error
 	Login(c *fiber.Ctx) error
+	InputUser(c *fiber.Ctx) error
 	GetAllUsers(c *fiber.Ctx) error
 	GetUserByID(c *fiber.Ctx) error
 	GetUserByEmail(c *fiber.Ctx) error
@@ -32,4 +33,11 @@ type KategoriController interface {
 }
 
 type DivisiController interface {
+	InputDivisi(c *fiber.Ctx) error
+	GetDivisiByID(c *fiber.Ctx) error
+	GetAllDivisi(c *fiber.Ctx) error
+	GetDivisiBySubDirektoratID(c *fiber.Ctx) error
+	GetDivisiBySubDirektoratName(c *fiber.Ctx) error
+	DeleteDivisiByID(c *fiber.Ctx) error
+	UpdateDivisi(c *fiber.Ctx) error
 }

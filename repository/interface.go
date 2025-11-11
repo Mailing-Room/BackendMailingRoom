@@ -35,4 +35,11 @@ type KategoriRepository interface {
 }
 
 type DivisiRepository interface {
+	InputDivisi(ctx context.Context, divisi model.Divisi) (model.Divisi, error)
+	GetDivisiByID(ctx context.Context, id string) (model.Divisi, error)
+	GetAllDivisi(ctx context.Context) ([]model.Divisi, error)
+	GetDivisiBySubDirektoratID(ctx context.Context, subDirektoratID string) ([]model.Divisi, error)
+	GetDivisiBySubDirektoratName(ctx context.Context, namaSubDirektorat string) ([]model.Divisi, error)
+	DeleteDivisiByID(ctx context.Context, id string) (model.Divisi, error)
+	UpdateDivisi(ctx context.Context, id string, updatedData model.Divisi) (model.Divisi, error)
 }

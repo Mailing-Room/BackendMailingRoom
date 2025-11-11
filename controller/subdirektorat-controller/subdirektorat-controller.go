@@ -1,4 +1,4 @@
-package departemen_controller
+package subdirektorat_controller
 
 import (
 	"backendmailingroom/model"

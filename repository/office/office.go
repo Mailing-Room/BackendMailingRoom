@@ -22,8 +22,8 @@ func (o *MOffice) InputOffice(ctx context.Context, office model.Office) (model.O
 		"kota":        office.Kota,
 		"kode_pos":    office.KodePos,
 		"no_telp":     office.NoTelp,
-		"createdAt":   time.Now().Format(time.RFC3339),
-		"updatedAt":   time.Now().Format(time.RFC3339),
+		"created_at":  time.Now().Format(time.RFC3339),
+		"updated_at":  time.Now().Format(time.RFC3339),
 	}
 
 	result, err := collection.InsertOne(ctx, officeData)
@@ -34,8 +34,8 @@ func (o *MOffice) InputOffice(ctx context.Context, office model.Office) (model.O
 	insertedID := fmt.Sprintf("%v", result.InsertedID)
 
 	office.OfficeID = insertedID
-	office.CreatedAt = officeData["createdAt"].(string)
-	office.UpdatedAt = officeData["updatedAt"].(string)
+	office.CreatedAt = officeData["created_at"].(string)
+	office.UpdatedAt = officeData["updated_at"].(string)
 
 	log.Println("[INFO] Data office berhasil disimpam dengan ID:", insertedID)
 	return office, nil

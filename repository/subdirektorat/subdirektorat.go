@@ -18,8 +18,8 @@ func (d *MSubDirektorat) InputSubDirektorat(ctx context.Context, subdirektorat m
 		"nama_sub_direktorat": subdirektorat.NamaSubDirektorat,
 		"kode_sub_direktorat": subdirektorat.KodeSubDirektorat,
 		"no_telp":             subdirektorat.NoTelp,
-		"createdAt":           time.Now().Format(time.RFC3339),
-		"updatedAt":           time.Now().Format(time.RFC3339),
+		"created_at":          time.Now().Format(time.RFC3339),
+		"updated_at":          time.Now().Format(time.RFC3339),
 	}
 
 	// Insert ke MongoDB
@@ -33,8 +33,8 @@ func (d *MSubDirektorat) InputSubDirektorat(ctx context.Context, subdirektorat m
 
 	// Set nilai ke struct untuk dikembalikan
 	subdirektorat.SubDirektoratID = insertedID
-	subdirektorat.CreatedAt = subdirektoratData["createdAt"].(string)
-	subdirektorat.UpdatedAt = subdirektoratData["updatedAt"].(string)
+	subdirektorat.CreatedAt = subdirektoratData["created_at"].(string)
+	subdirektorat.UpdatedAt = subdirektoratData["updated_at"].(string)
 
 	log.Println("[INFO] Data Sub Direktorat berhasil disimpan dengan ID:", insertedID)
 	return subdirektorat, nil

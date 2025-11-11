@@ -19,16 +19,16 @@ func (u *MUser) InputUser(ctx context.Context, user model.User) (model.User, err
 
 	// Membuat dokumen BSON untuk disimpan ke MongoDB
 	userData := bson.M{
-		"role_id":       user.RoleID,
-		"office_id":     user.OfficeID,
-		"departemen_id": user.DepartemenID,
-		"name":          user.Name,
-		"email":         user.Email,
-		"divisi_id":     user.DivisiID,
-		"phone":         user.Phone,
-		"password":      user.Password,
-		"createdAt":     time.Now().Format(time.RFC3339),
-		"updatedAt":     time.Now().Format(time.RFC3339),
+		"role_id":           user.RoleID,
+		"office_id":         user.OfficeID,
+		"sub_direktorat_id": user.SubDirektoratID,
+		"name":              user.Name,
+		"email":             user.Email,
+		"divisi_id":         user.DivisiID,
+		"phone":             user.Phone,
+		"password":          user.Password,
+		"created_at":        time.Now().Format(time.RFC3339),
+		"updated_at":        time.Now().Format(time.RFC3339),
 	}
 
 	// Menyimpan data ke MongoDB
@@ -38,13 +38,18 @@ func (u *MUser) InputUser(ctx context.Context, user model.User) (model.User, err
 		return model.User{}, fmt.Errorf("gagal menyimpan data user: %w", err)
 	}
 
-	// Ambil ID hasil insert (MongoDB ObjectID → string)
-	insertedID := fmt.Sprintf("%v", result.InsertedID)
-	user.UserID = insertedID
-	user.CreatedAt = userData["createdAt"].(string)
-	user.UpdatedAt = userData["updatedAt"].(string)
+	// Ambil ID hasil insert (MongoDB ObjectID → string) - PERBAIKAN DI SINI
+	insertedID, ok := result.InsertedID.(primitive.ObjectID)
+	if !ok {
+		log.Println("[ERROR] Gagal mengkonversi InsertedID ke ObjectID")
+		return model.User{}, fmt.Errorf("gagal mengkonversi InsertedID")
+	}
 
-	log.Println("[INFO] Data user berhasil disimpan dengan ID:", insertedID)
+	user.UserID = insertedID.Hex() // Convert ke hex string
+	user.CreatedAt = userData["created_at"].(string)
+	user.UpdatedAt = userData["updated_at"].(string)
+
+	log.Println("[INFO] Data user berhasil disimpan dengan ID:", user.UserID)
 	return user, nil
 }
 
@@ -149,15 +154,15 @@ func (u *MUser) UpdateUser(ctx context.Context, id string, updatedData model.Use
 	filter := bson.M{"_id": objectID}
 	update := bson.M{
 		"$set": bson.M{
-			"role_id":       updatedData.RoleID,
-			"office_id":     updatedData.OfficeID,
-			"departemen_id": updatedData.DepartemenID,
-			"name":          updatedData.Name,
-			"email":         updatedData.Email,
-			"divisi_id":     updatedData.DivisiID,
-			"phone":         updatedData.Phone,
-			"password":      updatedData.Password,
-			"updatedAt":     time.Now().Format(time.RFC3339),
+			"role_id":           updatedData.RoleID,
+			"office_id":         updatedData.OfficeID,
+			"sub_direktorat_id": updatedData.SubDirektoratID,
+			"name":              updatedData.Name,
+			"email":             updatedData.Email,
+			"divisi_id":         updatedData.DivisiID,
+			"phone":             updatedData.Phone,
+			"password":          updatedData.Password,
+			"updated_at":        time.Now().Format(time.RFC3339),
 		},
 	}
 

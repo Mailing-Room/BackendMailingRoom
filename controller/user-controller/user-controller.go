@@ -6,10 +6,117 @@ import (
 	"backendmailingroom/pkg/password"
 	"fmt"
 	"log"
+	"regexp"
 	"strings"
+
+	// "time"
 
 	"github.com/gofiber/fiber/v2"
 )
+
+func (u *UserHandler) RegisterUser(c *fiber.Ctx) error {
+	var user model.User
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "gagal membaca body request: " + err.Error(),
+		})
+	}
+
+	// Validasi input
+	if user.Email == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Email tidak boleh kosong",
+		})
+	}
+
+	// Validasi email harus @gmail.com
+	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@gmail\.com$`)
+	if !emailRegex.MatchString(user.Email) {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Email harus menggunakan @gmail.com",
+		})
+	}
+
+	existingUser, err := u.user.GetUserByEmail(c.Context(), user.Email)
+	if err == nil && existingUser.Email != "" {
+		// Email sudah terdaftar
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Email sudah terdaftar, silakan gunakan email lain",
+		})
+	}
+
+	if user.Password == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Password tidak boleh kosong",
+		})
+	}
+
+	if user.Name == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Nama tidak boleh kosong",
+		})
+	}
+
+	// PAKSAKAN role_id menjadi user (pengirim)
+	user.RoleID = "user"
+
+	// Hash password
+	passwordHash, err := password.HashingPassword(user.Password)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": "gagal melakukan hash password: " + err.Error(),
+		})
+	}
+
+	user.Password = passwordHash
+
+	// Simpan user dan dapatkan user dengan ID yang sudah di-set
+	savedUser, err := u.user.InputUser(c.Context(), user)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": "gagal menyimpan user: " + err.Error(),
+		})
+	}
+
+	// Jangan return password hash ke response
+	savedUser.Password = ""
+
+	return c.JSON(fiber.Map{
+		"status":  "success",
+		"message": "Registrasi berhasil",
+		"user":    savedUser,
+	})
+}
+
+func (u *UserHandler) Login(c *fiber.Ctx) error {
+	req := new(model.Login)
+	if err := c.BodyParser(req); err != nil {
+		return fmt.Errorf("failed to parse request body: %w", err)
+	}
+	user, err := u.user.GetUserForLogin(c.Context(), req.Email)
+	if err != nil {
+		return fmt.Errorf("failed to login user: %w", err)
+	}
+	passwordValid := password.CheckPassword(user.Password, req.Password)
+	log.Println(passwordValid)
+	if !passwordValid {
+		return fmt.Errorf("invalid password")
+	}
+
+	token, err := middleware.EncodeToken(user.UserID, user.RoleID)
+	if err != nil {
+		return fmt.Errorf("failed to generate token: %w", err)
+	}
+	return c.JSON(fiber.Map{"status": "success", "user": user, "token": token})
+}
 
 func (u *UserHandler) InputUser(c *fiber.Ctx) error {
 	var user model.User
@@ -52,28 +159,6 @@ func (u *UserHandler) InputUser(c *fiber.Ctx) error {
 		})
 	}
 	return c.JSON(fiber.Map{"status": "success", "user": user})
-}
-
-func (u *UserHandler) Login(c *fiber.Ctx) error {
-	req := new(model.Login)
-	if err := c.BodyParser(req); err != nil {
-		return fmt.Errorf("failed to parse request body: %w", err)
-	}
-	user, err := u.user.GetUserForLogin(c.Context(), req.Email)
-	if err != nil {
-		return fmt.Errorf("failed to login user: %w", err)
-	}
-	passwordValid := password.CheckPassword(user.Password, req.Password)
-	log.Println(passwordValid)
-	if !passwordValid {
-		return fmt.Errorf("invalid password")
-	}
-
-	token, err := middleware.EncodeToken(user.UserID, user.RoleID)
-	if err != nil {
-		return fmt.Errorf("failed to generate token: %w", err)
-	}
-	return c.JSON(fiber.Map{"status": "success", "user": user, "token": token})
 }
 
 func (u *UserHandler) GetAllUsers(c *fiber.Ctx) error {

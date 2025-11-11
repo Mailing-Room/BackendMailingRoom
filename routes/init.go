@@ -1,6 +1,7 @@
 package routes
 
 import (
+	divisi "backendmailingroom/repository/divisi"
 	office "backendmailingroom/repository/office"
 	subdirektorat "backendmailingroom/repository/subdirektorat"
 	user "backendmailingroom/repository/users"
@@ -13,6 +14,7 @@ func Init(db *mongo.Client) {
 	UserRepository = user.NewUser(db)
 	SubdirektoratRepository = subdirektorat.NewSubdirektorat(db)
 	OfficeRepository = office.NewOffice(db)
+	DivisiRepository = divisi.NewDivisi(db)
 }
 
 func Router(app *fiber.App) (err error) {
